@@ -18,6 +18,8 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import cs240.fammapclient.Models.DataHolder;
@@ -29,7 +31,6 @@ public class PersonActivity extends AppCompatActivity {
     private RecyclerView rv;
     private TextView firstline;
     private ImageView listIcon;
-    // private TextView secondline;
     private CustomAdapter adapter;
     private Person[] personList;
     private Event[] eventList;
@@ -39,6 +40,15 @@ public class PersonActivity extends AppCompatActivity {
     View view;
     String personID;
     String type;
+
+    TextView firstName;
+    TextView lastName;
+    TextView gender;
+
+    String clickedPersonfname;
+    String clickedPersonlname;
+    String clickedPersonGender;
+
     public PersonActivity() {
     }
 
@@ -48,8 +58,10 @@ public class PersonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person);
 
         firstline = (TextView) findViewById(R.id.firstline);
-        // secondline = (TextView) findViewById(R.id.secondline);
         listIcon = (ImageView) findViewById(R.id.person_rv_icon);
+        firstName = (TextView) findViewById(R.id.personActFname);
+        lastName = (TextView) findViewById(R.id.personActLname);
+        gender = (TextView) findViewById(R.id.personActGender);
 
         rv = (RecyclerView) findViewById(R.id.events_recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -57,7 +69,6 @@ public class PersonActivity extends AppCompatActivity {
         if(bundle.getString("personID") != null) {
             personID = bundle.getString("personID");
         }
-        //set up lists here
         setUpEventList();
         //this.items = new String[]{"info1" + "\n" + "secondrow", "info2", "info3"};
         adapter = new CustomAdapter(this, items);
@@ -65,6 +76,18 @@ public class PersonActivity extends AppCompatActivity {
 
         // setUpLists();
 
+
+    }
+    public void setUpGridLayout() {
+        firstName.setText(clickedPersonfname);
+        lastName.setText(clickedPersonlname);
+        if(clickedPersonGender.equals("f")) {
+            clickedPersonGender = "Female";
+        }
+        if(clickedPersonGender.equals("m")) {
+            clickedPersonGender = "Male";
+        }
+        gender.setText(clickedPersonGender);
 
     }
 
@@ -77,11 +100,14 @@ public class PersonActivity extends AppCompatActivity {
         type = "e";
         for(Person person: personList) {
             if(person.getPersonID().equals(this.personID)){
-                firstName = person.getFirstName();
-                lastName = person.getLastName();
+                clickedPersonfname = person.getFirstName();
+                clickedPersonlname = person.getLastName();
+                clickedPersonGender = person.getGender();
             }
         }
-        //query for this personID's events from database
+        setUpGridLayout();
+        //set up FAMILY LIST
+
         ArrayList<String> eventItems = new ArrayList<String>();
         for(Event event: eventList) {
             if(event.getPersonID().equals(personID)) {
@@ -104,11 +130,6 @@ public class PersonActivity extends AppCompatActivity {
         }
         this.items = eventItems.toArray(new String[eventItems.size()]);
 
-    }
-    public Event[] getEvents(String personID) {
-        Proxy proxy = new Proxy();
-      //  proxy.getEventsByPersonID()
-        return null;
     }
     class CustomAdapter extends RecyclerView.Adapter<Holder> {
         private String[] items;
@@ -160,9 +181,7 @@ public class PersonActivity extends AppCompatActivity {
             super(view);
             firstrow = (TextView) view.findViewById(R.id.firstline);
             icon = (ImageView) view.findViewById(R.id.person_rv_icon);
-            // secondrow = (TextView) view.findViewById(R.id.secondline);
             firstrow.setOnClickListener(this);
-            //  secondrow.setOnClickListener(this);
         }
 
         public void bind(String item) {

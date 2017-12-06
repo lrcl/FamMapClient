@@ -6,6 +6,37 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context="cs240.fammapclient.PersonActivity">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="6"
+        android:columnCount="1">
+        <TextView
+            android:id="@+id/personActFname"
+            android:textSize="7pt"
+            />
+        <TextView
+            android:text = "FIRST NAME"
+            android:textSize="4pt"
+            />
+        <TextView
+            android:id="@+id/personActLname"
+            android:textSize="7pt"
+            />
+        <TextView
+            android:text="LAST NAME"
+            android:textSize="4pt"
+            />
+        <TextView
+            android:id="@+id/personActGender"
+            android:textSize="7pt"
+            />
+        <TextView
+            android:text="GENDER"
+            android:textSize="4pt"
+            />
+
+    </GridLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
