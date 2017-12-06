@@ -13,6 +13,7 @@ import cs240.fammapclient.JsonHandling.RegisterRequest;
 import cs240.fammapclient.JsonHandling.RegisterResponse;
 import cs240.fammapclient.JsonHandling.Request;
 import cs240.fammapclient.JsonHandling.LoginRequest;
+import cs240.fammapclient.Models.Event;
 
 
 public class Proxy {
@@ -119,5 +120,12 @@ public class Proxy {
         }
 
     }
+
+    //public Event[] getEventsByPersonID() {
+      //  try{
+        //    Gson gson = new Gson();
+
+        //}
+    //}
 }
 

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import cs240.fammapclient.Models.DataHolder;
 import cs240.fammapclient.Models.Event;
 import cs240.fammapclient.Models.Person;
+import cs240.fammapclient.ServerConnection.Proxy;
 
 public class PersonActivity extends AppCompatActivity {
     private RecyclerView rv;
@@ -37,7 +38,7 @@ public class PersonActivity extends AppCompatActivity {
     String[] items;
     View view;
     String personID;
-
+    String type;
     public PersonActivity() {
     }
 
@@ -52,35 +53,38 @@ public class PersonActivity extends AppCompatActivity {
 
         rv = (RecyclerView) findViewById(R.id.events_recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        //set up lists here
-        setUpLists();
-        //this.items = new String[]{"info1" + "\n" + "secondrow", "info2", "info3"};
-        adapter = new CustomAdapter(this, items);
-        rv.setAdapter(adapter);
         Bundle bundle = getIntent().getExtras();
         if(bundle.getString("personID") != null) {
             personID = bundle.getString("personID");
         }
+        //set up lists here
+        setUpEventList();
+        //this.items = new String[]{"info1" + "\n" + "secondrow", "info2", "info3"};
+        adapter = new CustomAdapter(this, items);
+        rv.setAdapter(adapter);
+
         // setUpLists();
 
 
     }
 
-    public void setUpLists() {
+    public void setUpEventList() {
         dh = DataHolder.getInstance();
         eventList = dh.getEventList();
         personList = dh.getPersonList();
         String firstName = "";
         String lastName = "";
+        type = "e";
         for(Person person: personList) {
-            if(person.getPersonID().equals(personID)){
+            if(person.getPersonID().equals(this.personID)){
                 firstName = person.getFirstName();
                 lastName = person.getLastName();
             }
         }
+        //query for this personID's events from database
         ArrayList<String> eventItems = new ArrayList<String>();
         for(Event event: eventList) {
-         //   if(event.getPersonID().equals(personID)) {
+            if(event.getPersonID().equals(personID)) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(event.getEventType());
                 sb.append(": ");
@@ -95,13 +99,17 @@ public class PersonActivity extends AppCompatActivity {
                 sb.append(" ");
                 sb.append(lastName);
                 eventItems.add(sb.toString());
-           // }
+            }
 
         }
         this.items = eventItems.toArray(new String[eventItems.size()]);
 
     }
-
+    public Event[] getEvents(String personID) {
+        Proxy proxy = new Proxy();
+      //  proxy.getEventsByPersonID()
+        return null;
+    }
     class CustomAdapter extends RecyclerView.Adapter<Holder> {
         private String[] items;
         private LayoutInflater inflater;
@@ -127,8 +135,7 @@ public class PersonActivity extends AppCompatActivity {
             //if female, pass in "f"
             //if male, pass in "m"
             //if "e" it's neither, so use a pin as icon
-            String gender = "f";
-            holder.bind(item, gender);
+            holder.bind(item);
 
         }
 
@@ -158,28 +165,31 @@ public class PersonActivity extends AppCompatActivity {
             //  secondrow.setOnClickListener(this);
         }
 
-        public void bind(String item, String gender) {
+        public void bind(String item) {
             this.item = item;
             firstrow.setText(item);
-            setIcon(gender);
+            setIcon(type);
 
         }
-        public void setIcon(String gender) {
+        public void setIcon(String type) {
             Iconify.with(new FontAwesomeModule());
-            if (gender.equals("f")) {
+            if (type.equals("f")) {
                 Drawable mIcon = new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_female)
                         .colorRes(R.color.red)
                         .sizeDp(20);
                 icon.setImageDrawable(mIcon);
             }
-            if (gender.equals("m")) {
+            if (type.equals("m")) {
                 Drawable mIcon = new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_male)
                         .colorRes(R.color.blue)
                         .sizeDp(20);
                 icon.setImageDrawable(mIcon);
-
-
-                // secondrow.setText(item);
+            }
+            if(type.equals("e")) {
+                Drawable mIcon = new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_map_marker)
+                        .colorRes(R.color.orange)
+                        .sizeDp(20);
+                icon.setImageDrawable(mIcon);
             }
         }
     }
