@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //add fragment
+        //add login fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         LoginFragment loginFragment = new LoginFragment();
@@ -26,11 +26,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startMapFragment() {
+        //add mapFragment
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         MapFrag mapFragment = new MapFrag();
         transaction.replace(R.id.fragment_container, mapFragment);
         transaction.commit();
+    }
+    public void startPersonActivity() {
+        Intent i = new Intent(this, PersonActivity.class);
+        startActivity(i);
+
     }
 
 

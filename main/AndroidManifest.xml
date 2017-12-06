@@ -37,7 +37,8 @@
 
         <activity
             android:name=".MapFrag"
-            android:label="@string/title_activity_map_frag"></activity>
+            android:label="@string/title_activity_map_frag" />
+        <activity android:name=".PersonActivity"></activity>
     </application>
 
 </manifest>

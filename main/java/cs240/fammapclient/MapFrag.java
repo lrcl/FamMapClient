@@ -37,7 +37,7 @@ import cs240.fammapclient.Models.DataHolder;
 import cs240.fammapclient.Models.Event;
 import cs240.fammapclient.Models.Person;
 
-public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
+public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, View.OnClickListener{
 
     private GoogleMap mMap;
     DataHolder dh;
@@ -58,7 +58,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
         mapView.getMapAsync(this);
         eventInfo = (TextView) view.findViewById(R.id.eventInfoDisplay);
         image = (ImageView) view.findViewById(R.id.mapEventDisplayIcon);
-        //might have to override the lifeciycle methods mapview.resume etc
+        image.setOnClickListener(this);
+        eventInfo.setOnClickListener(this);
+        //might have to override the lifecycle methods mapview.resume etc
         return view;
     }
 
@@ -92,11 +94,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
         loadEventsToMap();
         mMap.setOnMarkerClickListener(this);
         eventInfo.setText("Click on any pin");
-
-        // Add a marker in Sydney and move the camera
-        // LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
     public void loadEventsToMap() {
         dh = DataHolder.getInstance();
@@ -129,6 +126,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             case R.id.search:
                 //start search activity
                 return true;
+            case R.id.filter:
+                //start filter activity
             case R.id.settings:
                 //start settings activity
                 return true;
@@ -240,5 +239,11 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
                     .sizeDp(30);
             image.setImageDrawable(icon);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.startPersonActivity();
     }
 }

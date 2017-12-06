@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FamMapClient</string>
+    <string name="app_name">Family Map</string>
 
     <string name="hostTag">Server Host:</string>
     <string name="portTag">Server Port:</string>
@@ -13,8 +13,11 @@
     <string name="loginButton">SIGN IN</string>
     <string name="registerButton">REGISTER</string>
     <string name="title_activity_map_fragment">Map</string>
+    <string name="lifeEvents">LIFE EVENTS</string>
+    <string name="familyTitle">FAMILY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_map_frag">Map</string>
+    <string name="title_activity_person">PersonActivity</string>
 </resources>
