@@ -18,7 +18,7 @@ import cs240.fammapclient.Models.Person;
 public class PersonActivity extends AppCompatActivity {
     private RecyclerView rv;
     private TextView firstline;
-    private TextView secondline;
+   // private TextView secondline;
     private CustomAdapter adapter;
     private Person[] personList;
     private Event[] eventList;
@@ -36,11 +36,11 @@ public class PersonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person);
 
         firstline = (TextView) findViewById(R.id.firstline);
-        secondline = (TextView) findViewById(R.id.secondline);
+       // secondline = (TextView) findViewById(R.id.secondline);
 
         rv = (RecyclerView) findViewById(R.id.events_recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        this.items = new String[]{"info1", "info2", "info3"};
+        this.items = new String[]{"info1"+"\n" + "secondrow", "info2", "info3"};
         adapter = new CustomAdapter(this, items);
         rv.setAdapter(adapter);
 
@@ -95,14 +95,14 @@ public class PersonActivity extends AppCompatActivity {
         public Holder(View view) {
             super(view);
             firstrow = (TextView) view.findViewById(R.id.firstline);
-            secondrow = (TextView) view.findViewById(R.id.secondline);
+           // secondrow = (TextView) view.findViewById(R.id.secondline);
             firstrow.setOnClickListener(this);
-            secondrow.setOnClickListener(this);
+          //  secondrow.setOnClickListener(this);
         }
         public void bind(String item) {
             this.item = item;
             firstrow.setText(item);
-            secondrow.setText(item);
+           // secondrow.setText(item);
         }
     }
 }
