@@ -33,11 +33,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, mapFragment);
         transaction.commit();
     }
-    public void startPersonActivity() {
-        Intent i = new Intent(this, PersonActivity.class);
-        startActivity(i);
 
-    }
 
 
 }

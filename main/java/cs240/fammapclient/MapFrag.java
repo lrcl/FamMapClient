@@ -2,6 +2,7 @@ package cs240.fammapclient;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -47,6 +48,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     ImageView image;
     View view;
     MapView mapView;
+    String personID;
 
     @Nullable
     @Override
@@ -150,7 +152,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
         //display gender matched icon
         displayGenderIcon(gender);
-
+        personID = currentPerson.getPersonID();
         displayEventInfo(currentEvent,currentPerson);
         return true;
     }
@@ -244,6 +246,12 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     @Override
     public void onClick(View v) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.startPersonActivity();
+        startPersonActivity();
+    }
+    public void startPersonActivity() {
+        Intent i = new Intent(getActivity().getApplicationContext(), PersonActivity.class);
+        i.putExtra("personID", personID);
+        startActivity(i);
+
     }
 }
