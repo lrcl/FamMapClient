@@ -152,8 +152,11 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
         //display gender matched icon
         displayGenderIcon(gender);
-        personID = currentPerson.getPersonID();
-        displayEventInfo(currentEvent,currentPerson);
+        if(currentPerson != null) {
+            personID = currentPerson.getPersonID();
+            displayEventInfo(currentEvent,currentPerson);
+        }
+
         return true;
     }
     public void displayEventInfo(Event currentEvent, Person currentPerson) {
@@ -205,21 +208,21 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             }
             if(person.getFatherID() != null) {
                 if (person.getFatherID().equals(currentEvent.getPersonID())) {
-                    currentPerson = person;
+                    currentPerson = getPersonById(person.getFatherID());
                     counter++;
                     break;
                 }
             }
             if(person.getMotherID() != null) {
                 if (person.getMotherID().equals(currentEvent.getPersonID())) {
-                    currentPerson = person;
+                    currentPerson = getPersonById(person.getMotherID());
                     counter++;
                     break;
                 }
             }
             if(person.getSpouseID() != null) {
                 if (person.getSpouseID().equals(currentEvent.getPersonID())) {
-                    currentPerson = person;
+                    currentPerson = getPersonById(person.getSpouseID());
                     counter++;
                     break;
                 }
@@ -242,7 +245,16 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             image.setImageDrawable(icon);
         }
     }
-
+    public Person getPersonById(String Id) {
+        dh = DataHolder.getInstance();
+        Person[] people = dh.getPersonList();
+        for(Person person: people) {
+            if(person.getPersonID().equals(Id)) {
+                return person;
+            }
+        }
+        return null;
+    }
     @Override
     public void onClick(View v) {
         MainActivity mainActivity = (MainActivity) getActivity();
