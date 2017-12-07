@@ -2,6 +2,7 @@ package cs240.fammapclient;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,19 +14,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
-import org.w3c.dom.Text;
+
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cs240.fammapclient.Models.DataHolder;
 import cs240.fammapclient.Models.Event;
 import cs240.fammapclient.Models.Person;
-import cs240.fammapclient.ServerConnection.Proxy;
 
 public class PersonActivity extends AppCompatActivity {
     private RecyclerView rv;
@@ -49,6 +57,11 @@ public class PersonActivity extends AppCompatActivity {
     String clickedPersonlname;
     String clickedPersonGender;
 
+    TextView lifeEventsTitle;
+
+    List<Group> groups;
+    Group group;
+
     public PersonActivity() {
     }
 
@@ -62,6 +75,7 @@ public class PersonActivity extends AppCompatActivity {
         firstName = (TextView) findViewById(R.id.personActFname);
         lastName = (TextView) findViewById(R.id.personActLname);
         gender = (TextView) findViewById(R.id.personActGender);
+        lifeEventsTitle = (TextView) findViewById(R.id.lifeEventsTitle);
 
         rv = (RecyclerView) findViewById(R.id.events_recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -69,14 +83,34 @@ public class PersonActivity extends AppCompatActivity {
         if(bundle.getString("personID") != null) {
             personID = bundle.getString("personID");
         }
+
         setUpEventList();
-        //this.items = new String[]{"info1" + "\n" + "secondrow", "info2", "info3"};
-        adapter = new CustomAdapter(this, items);
+
+        adapter = new CustomAdapter(this.getApplicationContext(), groups);
         rv.setAdapter(adapter);
 
-        // setUpLists();
+        //set up listeners
+        setUpListeners();
 
+    }
+    public void setUpListeners() {
+        adapter.setExpandCollapseListener(
+                new ExpandableRecyclerAdapter.ExpandCollapseListener() {
+                    @Override
+                    public void onParentExpanded(int parentPosition) {
+                        expandGroup(parentPosition);
+                    }
 
+                    @Override
+                    public void onParentCollapsed(int parentPosition) {
+                        adapter.collapseParent(parentPosition);
+                    }
+                }
+        );
+    }
+    public void expandGroup(int parentPosition) {
+        adapter.collapseAllParents();
+        adapter.expandParent(parentPosition);
     }
     public void setUpGridLayout() {
         firstName.setText(clickedPersonfname);
@@ -95,8 +129,6 @@ public class PersonActivity extends AppCompatActivity {
         dh = DataHolder.getInstance();
         eventList = dh.getEventList();
         personList = dh.getPersonList();
-        String firstName = "";
-        String lastName = "";
         type = "e";
         for(Person person: personList) {
             if(person.getPersonID().equals(this.personID)){
@@ -106,7 +138,7 @@ public class PersonActivity extends AppCompatActivity {
             }
         }
         setUpGridLayout();
-        //set up FAMILY LIST
+        //set up FAMILY LIST?
 
         ArrayList<String> eventItems = new ArrayList<String>();
         for(Event event: eventList) {
@@ -121,52 +153,90 @@ public class PersonActivity extends AppCompatActivity {
                 sb.append(event.getYear());
                 sb.append(")");
                 sb.append("\n");
-                sb.append(firstName);
+                sb.append(clickedPersonfname);
                 sb.append(" ");
-                sb.append(lastName);
+                sb.append(clickedPersonlname);
                 eventItems.add(sb.toString());
             }
 
         }
+        //put list of child and name of parent into group
         this.items = eventItems.toArray(new String[eventItems.size()]);
+        group = new Group("LIFE EVENTS", items);
+        ArrayList<Group> im = new ArrayList<Group>();
+        im.add(group);
+        groups = new ArrayList<Group>(im);
 
     }
-    class CustomAdapter extends RecyclerView.Adapter<Holder> {
+    public class Group implements Parent<String> {
+        String name;
+        String[] values;
+        public Group(String name, String[] values) {
+            this.name = name;
+            this.values = values;
+        }
+        @Override
+        public List<String> getChildList() {
+            return Arrays.asList(values);
+        }
+        @Override
+        public boolean isInitiallyExpanded() {
+            return true; //return false?
+        }
+    }
+    class CustomAdapter extends ExpandableRecyclerAdapter<Group, String, GroupHolder, Holder> {
         private String[] items;
         private LayoutInflater inflater;
 
-        public CustomAdapter(Context context, String[] items) {
-            this.items = items;
+        public CustomAdapter(Context context, List<Group> groups) {
+            super(groups);
+            //this.items = items;
             inflater = LayoutInflater.from(context);
         }
 
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public GroupHolder onCreateParentViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = inflater.inflate(R.layout.person_events_parent, viewGroup, false);
+            return new GroupHolder(view);
+        }
+        @Override
+        public Holder onCreateChildViewHolder(ViewGroup parent, int viewType) {
 
-            view = inflater.inflate(R.layout.person_rv_item, parent, false);
+            view = inflater.inflate(R.layout.person_events_child, parent, false);
             return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(Holder holder, int position) {
-            String item = items[position];
-            if (holder == null) {
-                holder = new Holder(view);
-            }
-            //if female, pass in "f"
-            //if male, pass in "m"
-            //if "e" it's neither, so use a pin as icon
+        public void onBindParentViewHolder(@NonNull GroupHolder holder, int i, Group group) {
+            holder.bind(group);
+
+        }
+
+        @Override
+        public void onBindChildViewHolder(@NonNull Holder holder, int i, int j, String item) {
             holder.bind(item);
 
         }
 
         @Override
         public int getItemCount() {
-            return items.length;
+            return group.values.length;
         }
     }
-
-    class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class GroupHolder extends ParentViewHolder {
+        //private TextView lifeEventsTitle;
+        private View view;
+        public GroupHolder(View view) {
+            super(view);
+            this.view = view;
+       //     parentTitle = (TextView) this.view.findViewById(R.id.lifeEventsTitle);
+        }
+        void bind(Group group) {
+            String title = group.name;
+            lifeEventsTitle.setText(title);
+        }
+    }
+    class Holder extends ChildViewHolder implements View.OnClickListener {
         private TextView firstrow;
         private ImageView icon;
         private String item;
@@ -213,3 +283,7 @@ public class PersonActivity extends AppCompatActivity {
         }
     }
 }
+//TO DO
+//get the expand and collapse to work
+//why is death event missing from list of events of person activity?
+//figure out how to do two expandable recycler views
