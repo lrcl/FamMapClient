@@ -99,6 +99,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
         super.onCreateOptionsMenu(menu, inflater);
 
     }
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -174,6 +175,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
                 return true;
             case R.id.filter:
                 //start filter activity
+                return true;
             case R.id.settings:
                 //start settings activity
                 return true;

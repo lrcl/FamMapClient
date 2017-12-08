@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,26 +12,28 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import cs240.fammapclient.Models.DataHolder;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // if(savedInstanceState == null) {
-            //add login fragment
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            LoginFragment loginFragment = new LoginFragment();
-            fragmentTransaction.add(R.id.fragment_container, loginFragment);
-            fragmentTransaction.commit();
-        //}
-        //else {
-          //  startMapFragment();
-        //}
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DataHolder dh = DataHolder.getInstance();
+        dh.setMainActivity(this);
+        //start login frag
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        LoginFragment loginFragment = new LoginFragment();
+        fragmentTransaction.add(R.id.fragment_container, loginFragment);
+        fragmentTransaction.commit();
+    }
     public void startMapFragment() {
         //add mapFragment
         FragmentManager manager = getFragmentManager();
@@ -39,9 +42,4 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, mapFragment);
         transaction.commit();
     }
-    //@Override
-    //protected void onResume() ??
-
-
-
 }

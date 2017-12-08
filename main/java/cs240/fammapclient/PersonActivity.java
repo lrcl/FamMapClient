@@ -1,18 +1,25 @@
 package cs240.fammapclient;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
@@ -22,6 +29,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import cs240.fammapclient.Models.DataHolder;
 import cs240.fammapclient.Models.Event;
@@ -67,17 +75,21 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     public PersonActivity() {
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.person_act_toolbar);
+        setActionBar(toolbar);
+        ActionBar ab = getActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         firstline = (TextView) findViewById(R.id.firstline);
         listIcon = (ImageView) findViewById(R.id.person_rv_icon);
         firstName = (TextView) findViewById(R.id.personActFname);
         lastName = (TextView) findViewById(R.id.personActLname);
         gender = (TextView) findViewById(R.id.personActGender);
-
         setUpList();
 
         rv = (RecyclerView) findViewById(R.id.events_recycler_view);
@@ -369,6 +381,24 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         parsedPersonInfo.add(sb.toString());
 
         return parsedPersonInfo;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                DataHolder dh = DataHolder.getInstance();
+                dh.setPersonActivity(this);
+//                FragmentManager manager = getFragmentManager();
+//                FragmentTransaction transaction = manager.beginTransaction();
+//                MapFrag mapFragment = new MapFrag();
+//                transaction.replace(R.id.frag_container3, mapFragment);
+//                transaction.commit();
+                PersonActivity personActivity = dh.getPersonActivity();
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return true;
     }
 
     class CustomAdapter extends RecyclerView.Adapter<Holder> {
