@@ -161,6 +161,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                 sb.append(last);
                 sb.append("\n");
                 sb.append(type);
+                sb.append(" ");
+                sb.append("Id: ");
+                sb.append(person.getPersonID());
                 familyList.add(sb.toString());
             }
         }
@@ -181,6 +184,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             sb.append(last);
             sb.append("\n");
             sb.append(type);
+            sb.append(" ");
+            sb.append("Id: ");
+            sb.append(spouse.getPersonID());
             if(familyList.size() == 2) {
                 m3.setText(sb.toString());
             }
@@ -202,6 +208,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             sb.append(last);
             sb.append("\n");
             sb.append(type);
+            sb.append(" ");
+            sb.append("Id: ");
+            sb.append(child.getPersonID());
             if(familyList.size() == 3) {
                 m4.setText(sb.toString());
             }
@@ -308,7 +317,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                 sb.append(" ");
                 sb.append(clickedPersonlname);
                 sb.append(" ");
-                sb.append("eventID: ");
+                sb.append("eID: ");
                 sb.append(event.getEventID());
                 eventItems.add(sb.toString());
                 displayedEvents.add(event);
@@ -321,9 +330,45 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        //get personID pass it to intent have the intent start a new person activity
+        CharSequence info = null;
         if(v.getId() == m1.getId()) {
-          //  String m1.getText();
+            info = m1.getText();
         }
+        if(v.getId() == m2.getId()) {
+            info = m2.getText();
+        }
+        if(v.getId() == m3.getId()) {
+            info = m3.getText();
+        }
+        if(v.getId() == m4.getId()) {
+            info = m4.getText();
+        }
+        ArrayList<String> parsedInfo = parsePersonInfo(info);
+        String personID = parsedInfo.get(parsedInfo.size()-1);
+
+        //start new person activity with chosen family member's personID
+        Intent i = new Intent(getApplicationContext(), PersonActivity.class);
+        i.putExtra("personID", personID);
+        startActivity(i);
+    }
+    public ArrayList<String> parsePersonInfo(CharSequence info) {
+        StringBuilder sb = new StringBuilder();
+        String personInfo = info.toString();
+        char[] pInfo = personInfo.toCharArray();
+        ArrayList<String> parsedPersonInfo = new ArrayList<>();
+        for(char c: pInfo) {
+            if(c != ' ') {
+                sb.append(c);
+            }
+            if(c == ' ') {
+                parsedPersonInfo.add(sb.toString());
+                sb = new StringBuilder();
+            }
+        }
+        parsedPersonInfo.add(sb.toString());
+
+        return parsedPersonInfo;
     }
 
     class CustomAdapter extends RecyclerView.Adapter<Holder> {
@@ -400,95 +445,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             return parsedEventInfo;
         }
         public Holder(View view) {
-            super(view);
-            firstrow = (TextView) view.findViewById(R.id.firstline);
-            icon = (ImageView) view.findViewById(R.id.person_rv_icon);
-            firstrow.setOnClickListener(this);
-        }
-
-        public void bind(String item) {
-            this.item = item;
-            firstrow.setText(item);
-            setIcon(type);
-
-        }
-        public void setIcon(String type) {
-            Iconify.with(new FontAwesomeModule());
-            if (type.equals("f")) {
-                Drawable mIcon = new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_female)
-                        .colorRes(R.color.red)
-                        .sizeDp(20);
-                icon.setImageDrawable(mIcon);
-            }
-            if (type.equals("m")) {
-                Drawable mIcon = new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_male)
-                        .colorRes(R.color.blue)
-                        .sizeDp(20);
-                icon.setImageDrawable(mIcon);
-            }
-            if(type.equals("e")) {
-                Drawable mIcon = new IconDrawable(getApplicationContext(), FontAwesomeIcons.fa_map_marker)
-                        .colorRes(R.color.orange)
-                        .sizeDp(20);
-                icon.setImageDrawable(mIcon);
-            }
-        }
-    }
-    //SECOND ADAPTER FOR SECOND RECYCLERVIEW
-    class Adapter extends RecyclerView.Adapter<Holder> {
-        private String[] items;
-        private LayoutInflater inflater;
-
-        public Adapter(Context context, String[] items) {
-            this.items = items;
-            inflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            view = inflater.inflate(R.layout.person_rv_item, parent, false);
-            return new Holder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(Holder holder, int position) {
-            String item = items[position];
-            if (holder == null) {
-                holder = new Holder(view);
-            }
-            //if female, pass in "f"
-            //if male, pass in "m"
-            //if "e" it's neither, so use a pin as icon
-            holder.bind(item);
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return items.length;
-        }
-    }
-
-    class Holder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView firstrow;
-        private ImageView icon;
-        private String item;
-
-        @Override
-        public void onClick(View v) {
-            Toast toast = Toast.makeText(getApplicationContext(), "item clicked", Toast.LENGTH_LONG);
-            toast.show();
-            CharSequence info = firstrow.getText();
-            parseInfo(info);
-
-
-        }
-        public void parseInfo(CharSequence info) {
-
-        }
-
-        public Holder2(View view) {
             super(view);
             firstrow = (TextView) view.findViewById(R.id.firstline);
             icon = (ImageView) view.findViewById(R.id.person_rv_icon);
