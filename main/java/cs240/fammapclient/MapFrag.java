@@ -53,6 +53,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
     boolean calledFromMapActivity;
     Event clickedEvent;
+    boolean mapMarkerWasClicked = false;
 
     @Nullable
     @Override
@@ -78,6 +79,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
         Bundle bundle = this.getArguments();
         if(bundle != null) {
             calledFromMapActivity = true;
+            if(bundle.getString("personID") != null) {
+                this.personID = bundle.getString("personID");
+            }
         }
     }
     /**
@@ -196,6 +200,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             personID = currentPerson.getPersonID();
             displayEventInfo(currentEvent,currentPerson);
         }
+        mapMarkerWasClicked = true;
 
         return true;
     }
@@ -301,11 +306,20 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     }
     @Override
     public void onClick(View v) {
-        MainActivity mainActivity = (MainActivity) getActivity();
+        //MapActivity mainActivity = (MainActivity) getActivity();
         startPersonActivity();
     }
     public void startPersonActivity() {
         Intent i = new Intent(getActivity().getApplicationContext(), PersonActivity.class);
+        if(!mapMarkerWasClicked) {
+           // Person person = matchPersonID()
+            Bundle b = getArguments();
+            if(b != null) {
+                if(b.getString("personID") != null) {
+                    personID = b.getString("personID");
+                }
+            }
+        }
         i.putExtra("personID", personID);
         startActivity(i);
 

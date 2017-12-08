@@ -1,5 +1,6 @@
 package cs240.fammapclient;
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -12,6 +13,8 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+       // ActionBar ab = getActionBar();
+       // ab.setDisplayHomeAsUpEnabled(true);
         //add mapFragment
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();

@@ -17,12 +17,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //add login fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        LoginFragment loginFragment = new LoginFragment();
-        fragmentTransaction.add(R.id.fragment_container, loginFragment);
-        fragmentTransaction.commit();
+       // if(savedInstanceState == null) {
+            //add login fragment
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            LoginFragment loginFragment = new LoginFragment();
+            fragmentTransaction.add(R.id.fragment_container, loginFragment);
+            fragmentTransaction.commit();
+        //}
+        //else {
+          //  startMapFragment();
+        //}
+
     }
 
     public void startMapFragment() {
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, mapFragment);
         transaction.commit();
     }
+    //@Override
+    //protected void onResume() ??
 
 
 
