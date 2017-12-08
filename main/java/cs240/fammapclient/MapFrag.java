@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -50,6 +51,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     MapView mapView;
     String personID;
 
+    boolean calledFromMapActivity;
+    Event clickedEvent;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +73,12 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        calledFromMapActivity = false;
         setHasOptionsMenu(true);
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            calledFromMapActivity = true;
+        }
     }
     /**
      * Manipulates the map once available.
@@ -95,7 +104,38 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
         loadEventsToMap();
         mMap.setOnMarkerClickListener(this);
-        eventInfo.setText("Click on any pin");
+        if(!calledFromMapActivity) {
+            eventInfo.setText("Click on any pin");
+        }
+        if(calledFromMapActivity) {
+            String eventID = "";
+            String personID = "";
+            Bundle bundle = this.getArguments();
+            if(bundle != null) {
+                if(bundle.getString("eventID") != null) {
+                    eventID = bundle.getString("eventID");
+                }
+                if(bundle.getString("personID") != null) {
+                    personID = bundle.getString("personID");
+                }
+            }
+            clickedEvent = findEventInList(eventID);
+            center(clickedEvent);
+            Person currentPerson = getPersonById(personID);
+            displayEventInfo(clickedEvent, currentPerson);
+        }
+
+
+
+    }
+    public Event findEventInList(String eventID) {
+        Event[] events = dh.getEventList();
+        for(Event event: events) {
+            if(event.getEventID().equals(eventID)) {
+                return event;
+            }
+        }
+        return null;
     }
     public void loadEventsToMap() {
         dh = DataHolder.getInstance();
@@ -109,11 +149,11 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             if(event.getEventType().equals("birth")) {
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
             }
-            if(event.getEventType().equals("marriage")) {
+            else if(event.getEventType().equals("marriage")) {
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
             }
-            if(event.getEventType().equals("death")) {
+            else if(event.getEventType().equals("death")) {
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
             }
 
@@ -181,10 +221,14 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
     }
     public void center(Event currentEvent) {
-        LatLng latLng = new LatLng(currentEvent.getLatitude(),currentEvent.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        // CameraUpdate update = CameraUpdateFactory.zoomTo(3);
-        // mMap.moveCamera(update);
+        if(currentEvent != null) {
+            LatLng latLng = new LatLng(currentEvent.getLatitude(),currentEvent.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+             CameraUpdate update = CameraUpdateFactory.zoomTo(3);
+             mMap.moveCamera(update);
+        }
+
+
 
     }
     public Event matchEventID(Event currentEvent, String eventID) {

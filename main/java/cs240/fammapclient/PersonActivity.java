@@ -1,6 +1,7 @@
 package cs240.fammapclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,6 +60,10 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     String clickedPersonlname;
     String clickedPersonGender;
 
+    ArrayList<Event> displayedEvents = new ArrayList<Event>();
+
+    Person clickedPerson;
+
     public PersonActivity() {
     }
 
@@ -86,9 +91,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         adapter = new CustomAdapter(this, items);
         rv.setAdapter(adapter);
 
-
         setUpFamilyMemberList();
-       // displayFamilyMembers();
     }
 
 
@@ -277,18 +280,16 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         dh = DataHolder.getInstance();
         eventList = dh.getEventList();
         personList = dh.getPersonList();
-        String firstName = "";
-        String lastName = "";
         type = "e";
         for(Person person: personList) {
             if(person.getPersonID().equals(this.personID)){
                 clickedPersonfname = person.getFirstName();
                 clickedPersonlname = person.getLastName();
                 clickedPersonGender = person.getGender();
+                clickedPerson = person;
             }
         }
         setUpGridLayout();
-        //set up FAMILY LIST
 
         ArrayList<String> eventItems = new ArrayList<String>();
         for(Event event: eventList) {
@@ -303,10 +304,14 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                 sb.append(event.getYear());
                 sb.append(")");
                 sb.append("\n");
-                sb.append(firstName);
+                sb.append(clickedPersonfname);
                 sb.append(" ");
-                sb.append(lastName);
+                sb.append(clickedPersonlname);
+                sb.append(" ");
+                sb.append("eventID: ");
+                sb.append(event.getEventID());
                 eventItems.add(sb.toString());
+                displayedEvents.add(event);
             }
 
         }
@@ -365,8 +370,35 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         public void onClick(View v) {
             Toast toast = Toast.makeText(getApplicationContext(), "item clicked", Toast.LENGTH_LONG);
             toast.show();
-        }
+            ArrayList<String> events= matchClickedEventID();
+            String chosenEventID = events.get(events.size()-1);
+            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+            i.putExtra("eventID", chosenEventID);
+            i.putExtra("personID", clickedPerson.getPersonID());
+            startActivity(i);
 
+        }
+        public ArrayList<String> matchClickedEventID() {
+
+            CharSequence info = firstrow.getText();
+            String eventInfo = info.toString();
+            StringBuilder sb = new StringBuilder();
+            char[] eInfo = eventInfo.toCharArray();
+            ArrayList<String> parsedEventInfo = new ArrayList<>();
+            for(char c: eInfo) {
+                if(c != ' ') {
+                    sb.append(c);
+                }
+                if(c == ' ') {
+                    parsedEventInfo.add(sb.toString());
+                    sb = new StringBuilder();
+                }
+            }
+            parsedEventInfo.add(sb.toString());
+
+
+            return parsedEventInfo;
+        }
         public Holder(View view) {
             super(view);
             firstrow = (TextView) view.findViewById(R.id.firstline);
@@ -447,6 +479,13 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         public void onClick(View v) {
             Toast toast = Toast.makeText(getApplicationContext(), "item clicked", Toast.LENGTH_LONG);
             toast.show();
+            CharSequence info = firstrow.getText();
+            parseInfo(info);
+
+
+        }
+        public void parseInfo(CharSequence info) {
+
         }
 
         public Holder2(View view) {
