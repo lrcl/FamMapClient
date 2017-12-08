@@ -53,11 +53,9 @@ public class MapActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case android.R.id.home:
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                MapFrag mapFragment = new MapFrag();
-                transaction.replace(R.id.frag_container2, mapFragment);
-                transaction.commit();
+               Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+               intent.putExtra("mapActivity", "mapActivity");
+               startActivity(intent);
                return true;
         }
         return true;

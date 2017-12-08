@@ -20,26 +20,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         DataHolder dh = DataHolder.getInstance();
         dh.setMainActivity(this);
-        //start login frag
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            if(bundle.getString("personActivity") != null) {
+                startMapFragment();
+            }
+            if(bundle.getString("mapActivity") != null) {
+                startMapFragment();
+            }
+        }
+        else {
+         startLoginFragment();
+        }
+    }
+    public void startMapFragment() {
+        //add mapFragment
+        Bundle bundle = new Bundle();
+        bundle.putString("mainActivity", "mainActivity");
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        MapFrag mapFragment = new MapFrag();
+        mapFragment.setArguments(bundle);
+        transaction.replace(R.id.fragment_container, mapFragment);
+        transaction.commit();
+    }
+    public void startLoginFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         LoginFragment loginFragment = new LoginFragment();
         fragmentTransaction.add(R.id.fragment_container, loginFragment);
         fragmentTransaction.commit();
-    }
-    public void startMapFragment() {
-        //add mapFragment
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        MapFrag mapFragment = new MapFrag();
-        transaction.replace(R.id.fragment_container, mapFragment);
-        transaction.commit();
     }
 }

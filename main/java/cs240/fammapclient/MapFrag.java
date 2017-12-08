@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import cs240.fammapclient.Models.DataHolder;
@@ -54,6 +56,7 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     boolean calledFromMapActivity;
     Event clickedEvent;
     boolean mapMarkerWasClicked = false;
+    boolean calledFromMainActivity;
 
     @Nullable
     @Override
@@ -75,12 +78,16 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         calledFromMapActivity = false;
+        calledFromMainActivity = false;
         setHasOptionsMenu(true);
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            calledFromMapActivity = true;
             if(bundle.getString("personID") != null) {
                 this.personID = bundle.getString("personID");
+                calledFromMapActivity = true;
+            }
+            if(bundle.getString("mainActivity") != null) {
+                calledFromMainActivity = true;
             }
         }
     }
@@ -109,9 +116,8 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
         loadEventsToMap();
         mMap.setOnMarkerClickListener(this);
-        if(!calledFromMapActivity) {
-            eventInfo.setText("Click on any pin");
-        }
+      //  if(!calledFromMapActivity) {
+      //  }
         if(calledFromMapActivity) {
             String eventID = "";
             String personID = "";
@@ -128,6 +134,19 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             center(clickedEvent);
             Person currentPerson = getPersonById(personID);
             displayEventInfo(clickedEvent, currentPerson);
+        }
+        if(calledFromMainActivity) {
+            DataHolder dh = DataHolder.getInstance();
+            Event originalEvent = dh.getOriginalEvent();
+            if(originalEvent != null) {
+                center(originalEvent);
+                Person currentPerson = getPersonById(originalEvent.getPersonID());
+                displayEventInfo(originalEvent, currentPerson);
+            }
+            else {
+                eventInfo.setText("Click on any pin");
+            }
+
         }
 
 
@@ -203,7 +222,11 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             displayEventInfo(currentEvent,currentPerson);
         }
         mapMarkerWasClicked = true;
+        if(calledFromMainActivity) {
+            DataHolder dh = DataHolder.getInstance();
+            dh.setOriginalEvent(currentEvent);
 
+        }
         return true;
     }
     public void displayEventInfo(Event currentEvent, Person currentPerson) {
@@ -311,16 +334,28 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
         //MapActivity mainActivity = (MainActivity) getActivity();
         startPersonActivity();
     }
+
     public void startPersonActivity() {
         Intent i = new Intent(getActivity().getApplicationContext(), PersonActivity.class);
         if(!mapMarkerWasClicked) {
-           // Person person = matchPersonID()
-            Bundle b = getArguments();
-            if(b != null) {
-                if(b.getString("personID") != null) {
-                    personID = b.getString("personID");
+            if(calledFromMainActivity) {
+                DataHolder dh = DataHolder.getInstance();
+                if (dh.getOriginalEvent() != null) {
+                    this.personID = dh.getOriginalEvent().getPersonID();
                 }
             }
+           // Person person = matchPersonID()
+          else {
+                    Bundle b = getArguments();
+                    if (b != null) {
+                        if (b.getString("personID") != null) {
+                            personID = b.getString("personID");
+                        }
+                    }
+                }
+
+
+
         }
         i.putExtra("personID", personID);
         startActivity(i);

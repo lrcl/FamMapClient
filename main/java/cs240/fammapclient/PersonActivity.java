@@ -388,13 +388,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             case android.R.id.home:
                 DataHolder dh = DataHolder.getInstance();
                 dh.setPersonActivity(this);
-//                FragmentManager manager = getFragmentManager();
-//                FragmentTransaction transaction = manager.beginTransaction();
-//                MapFrag mapFragment = new MapFrag();
-//                transaction.replace(R.id.frag_container3, mapFragment);
-//                transaction.commit();
                 PersonActivity personActivity = dh.getPersonActivity();
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("personActivity", "personActivity");
                 startActivity(intent);
                 return true;
         }

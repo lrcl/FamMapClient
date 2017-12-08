@@ -12,6 +12,7 @@ public class DataHolder {
     private Person[] personList;
     MainActivity mainActivity;
     PersonActivity personActivity;
+    Event originalEvent;
 
     public Event[] getEventList(){
         return eventList;
@@ -36,6 +37,12 @@ public class DataHolder {
     }
     public PersonActivity getPersonActivity() {
         return personActivity;
+    }
+    public void setOriginalEvent(Event event) {
+        this.originalEvent = event;
+    }
+    public Event getOriginalEvent() {
+        return this.originalEvent;
     }
     private DataHolder(){}
     public static DataHolder getInstance() {
