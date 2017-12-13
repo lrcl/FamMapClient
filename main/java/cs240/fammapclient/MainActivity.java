@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
             if(bundle.get("searchActivity") != null) {
                 startMapFragment();
             }
+            if(bundle.get("resyncTask") != null) {
+                startMapFragment();
+            }
         }
         else {
          startLoginFragment();

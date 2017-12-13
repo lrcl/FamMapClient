@@ -37,8 +37,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
-
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         host = (EditText) view.findViewById(R.id.hostInput);
         port = (EditText) view.findViewById(R.id.portInput);
         userName = (EditText) view.findViewById(R.id.userNameInput);
@@ -88,7 +88,4 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
 //        System.out.println("end method ----------------------");
     }
-
-   // public LoginFragment() {}
-
 }

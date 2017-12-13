@@ -56,6 +56,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 DataHolder dh = DataHolder.getInstance();
                 dh.setOriginalEvent(null);
                 startMainActivityLogin();
+            case R.id.resyncLine1:
+                DataHolder dh2 = DataHolder.getInstance();
+                dh2.setOriginalEvent(null);
+                //start resyncTask
+                ResyncTask resyncTask = new ResyncTask(getApplicationContext());
+                resyncTask.execute();
         }
     }
     public void startMainActivityLogin() {
@@ -83,6 +89,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         resync1 = findViewById(R.id.resyncLine1);
         resync2 = findViewById(R.id.resyncLine2);
+        resync1.setOnClickListener(this);
+        resync2.setOnClickListener(this);
 
 
 

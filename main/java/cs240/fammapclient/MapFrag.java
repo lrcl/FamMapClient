@@ -70,8 +70,10 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
         image = (ImageView) view.findViewById(R.id.mapEventDisplayIcon);
         image.setOnClickListener(this);
         eventInfo.setOnClickListener(this);
-        //might have to override the lifecycle methods mapview.resume etc
         return view;
+    }
+    public void setWidgets(){
+
     }
 
     @Override
