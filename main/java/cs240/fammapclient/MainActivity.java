@@ -30,6 +30,15 @@ public class MainActivity extends AppCompatActivity {
             if(bundle.getString("mapActivity") != null) {
                 startMapFragment();
             }
+            if(bundle.getString("settingsActivity") != null) {
+                startMapFragment();
+            }
+            if(bundle.get("filterActivity") != null) {
+                startMapFragment();
+            }
+            if(bundle.get("searchActivity") != null) {
+                startMapFragment();
+            }
         }
         else {
          startLoginFragment();
@@ -47,9 +56,15 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
     public void startLoginFragment() {
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         LoginFragment loginFragment = new LoginFragment();
+//        Bundle bundle = getIntent().getExtras();
+//        if(bundle != null) {
+//            bundle.clear();
+//            loginFragment.setArguments(bundle);
+//        }
         fragmentTransaction.add(R.id.fragment_container, loginFragment);
         fragmentTransaction.commit();
     }

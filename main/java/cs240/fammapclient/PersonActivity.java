@@ -80,10 +80,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.person_act_toolbar);
-        setActionBar(toolbar);
-        ActionBar ab = getActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
 
         firstline = (TextView) findViewById(R.id.firstline);
         listIcon = (ImageView) findViewById(R.id.person_rv_icon);
@@ -99,7 +95,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             personID = bundle.getString("personID");
         }
         setUpEventList();
-        //this.items = new String[]{"info1" + "\n" + "secondrow", "info2", "info3"};
         adapter = new CustomAdapter(this, items);
         rv.setAdapter(adapter);
 

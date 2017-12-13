@@ -38,14 +38,22 @@
         <activity
             android:name=".MapFrag"
             android:label="@string/title_activity_map_frag" />
-        <activity android:name=".PersonActivity"
+        <activity
+            android:name=".PersonActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MapActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".FilterActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SearchActivity"
             android:parentActivityName=".MainActivity"
-            />
-        <activity android:name=".MapActivity"
-            android:parentActivityName=".MainActivity"
-            >
-
-        </activity>
+            ></activity>
     </application>
 
 </manifest>

@@ -116,8 +116,6 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
 
         loadEventsToMap();
         mMap.setOnMarkerClickListener(this);
-      //  if(!calledFromMapActivity) {
-      //  }
         if(calledFromMapActivity) {
             String eventID = "";
             String personID = "";
@@ -148,7 +146,9 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
             }
 
         }
-
+        else if(this.getArguments() == null){
+            eventInfo.setText("Click on any pin");
+        }
 
 
     }
@@ -190,16 +190,29 @@ public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
-                //start search activity
+                startSearchActivity();
                 return true;
             case R.id.filter:
-                //start filter activity
+                startFilterActivity();
                 return true;
             case R.id.settings:
-                //start settings activity
+                startSettingsActivity();
                 return true;
         }
         return true;
+    }
+    public void startSearchActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
+        startActivity(intent);
+    }
+    public void startSettingsActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
+    }
+    public void startFilterActivity() {
+        //start filter activity
+        Intent intent = new Intent(getActivity().getApplicationContext(), FilterActivity.class);
+        startActivity(intent);
     }
     public MapFrag() {}
     @Override

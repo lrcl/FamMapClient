@@ -15,9 +15,9 @@
     <string name="title_activity_map_fragment">Map</string>
     <string name="lifeEvents">LIFE EVENTS</string>
     <string name="familyTitle">FAMILY</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_map_frag">Map</string>
-    <string name="title_activity_person">PersonActivity</string>
+    <string name="title_activity_person">Person Activity</string>
+    <string name="logoutLine1">Logout</string>
+    <string name="logoutLine2">RETURNS TO LOGIN SCREEN</string>
 </resources>

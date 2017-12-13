@@ -21,11 +21,11 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.map_act_toolbar);
-        setActionBar(toolbar);
-        ActionBar ab = getActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        loadMapFragment();
 
+
+    }
+    public void loadMapFragment() {
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         MapFrag mapFragment = new MapFrag();
@@ -48,7 +48,6 @@ public class MapActivity extends AppCompatActivity {
         transaction.replace(R.id.frag_container2, mapFragment);
         transaction.commit();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
