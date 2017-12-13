@@ -26,7 +26,6 @@ class RegisterTask extends AsyncTask<String, String, String> {
     public Activity mainActivity;
 
     public JSONObject registerResultsJO;
-    //    public TaskDataTransfer dataTransfer;
     @Override
     protected String doInBackground(String... strings) {
 

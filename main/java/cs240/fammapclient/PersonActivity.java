@@ -47,30 +47,30 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private Person[] personList2;
     private Event[] eventList;
     private Holder holder;
-    DataHolder dh;
-    DataHolder dh2;
-    String[] items;
-    String[] familyArray;
-    View view;
-    String personID;
-    String type;
+    private DataHolder dh;
+    private DataHolder dh2;
+    private String[] items;
+    private String[] familyArray;
+    private View view;
+    private String personID;
+    private String type;
 
-    TextView m1;
-    TextView m2;
-    TextView m3;
-    TextView m4;
+    private TextView m1;
+    private TextView m2;
+    private TextView m3;
+    private TextView m4;
 
-    TextView firstName;
-    TextView lastName;
-    TextView gender;
+    private TextView firstName;
+    private TextView lastName;
+    private TextView gender;
 
-    String clickedPersonfname;
-    String clickedPersonlname;
-    String clickedPersonGender;
+    private String clickedPersonfname;
+    private String clickedPersonlname;
+    private String clickedPersonGender;
 
-    ArrayList<Event> displayedEvents = new ArrayList<Event>();
+    private ArrayList<Event> displayedEvents = new ArrayList<Event>();
 
-    Person clickedPerson;
+    private Person clickedPerson;
 
     public PersonActivity() {
     }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="cs240.fammapclient.SettingsActivity">
 
     <GridLayout
@@ -13,8 +13,58 @@
         android:rowCount="12"
         android:columnCount="1">
         <TextView
+            android:id="@+id/lifeStoryLine1"
+            android:textSize="8pt"
+            android:text="@string/lifeStoryLine1"
+            />
+        <TextView
+            android:id="@+id/lifeStoryLine2"
+            android:textSize="5pt"
+            android:text="@string/lifeStoryLine2"
+            />
+        <TextView
+            android:id="@+id/familyTreeLine1"
+            android:textSize="8pt"
+            android:text="@string/familyTreeLine1"
+            />
+        <TextView
+            android:id="@+id/familyTreeLine2"
+            android:textSize="5pt"
+            android:text="@string/familyTreeLine2"
+            />
+        <TextView
+            android:id="@+id/spouseLine1"
+            android:textSize="8pt"
+            android:text="@string/spouseLine1"
+            />
+        <TextView
+            android:id="@+id/spouseLine2"
+            android:textSize="5pt"
+            android:text="@string/spouseLine2"
+            />
+        <TextView
+            android:id="@+id/mapTypeLine1"
+            android:textSize="8pt"
+            android:text="@string/mapTypeLine1"
+            />
+        <TextView
+            android:id="@+id/mapTypeLine2"
+            android:textSize="5pt"
+            android:text="@string/mapTypeLine2"
+            />
+        <TextView
+            android:id="@+id/resyncLine1"
+            android:textSize="8pt"
+            android:text="@string/resyncLine1"
+            />
+        <TextView
+            android:id="@+id/resyncLine2"
+            android:textSize="5pt"
+            android:text="@string/resyncLine2"
+            />
+        <TextView
             android:id="@+id/logout_line1"
-            android:textSize="10pt"
+            android:textSize="8pt"
             android:text="@string/logoutLine1"
             />
         <TextView

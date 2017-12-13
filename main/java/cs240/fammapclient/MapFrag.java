@@ -44,19 +44,19 @@ import cs240.fammapclient.Models.Person;
 public class MapFrag extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, View.OnClickListener{
 
     private GoogleMap mMap;
-    DataHolder dh;
-    Event[] eventList;
-    Person[] personList;
-    TextView eventInfo;
-    ImageView image;
-    View view;
-    MapView mapView;
-    String personID;
+    private DataHolder dh;
+    private Event[] eventList;
+    private Person[] personList;
+    private TextView eventInfo;
+    private ImageView image;
+    private View view;
+    private MapView mapView;
+    private String personID;
 
-    boolean calledFromMapActivity;
-    Event clickedEvent;
-    boolean mapMarkerWasClicked = false;
-    boolean calledFromMainActivity;
+    private boolean calledFromMapActivity;
+    private Event clickedEvent;
+    private boolean mapMarkerWasClicked = false;
+    private boolean calledFromMainActivity;
 
     @Nullable
     @Override

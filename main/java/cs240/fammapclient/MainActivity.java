@@ -60,11 +60,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         LoginFragment loginFragment = new LoginFragment();
-//        Bundle bundle = getIntent().getExtras();
-//        if(bundle != null) {
-//            bundle.clear();
-//            loginFragment.setArguments(bundle);
-//        }
         fragmentTransaction.add(R.id.fragment_container, loginFragment);
         fragmentTransaction.commit();
     }

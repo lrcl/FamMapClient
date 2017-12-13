@@ -16,15 +16,15 @@ import cs240.fammapclient.ServerConnection.Proxy;
 
 public class LoginTask extends AsyncTask<String, String, String> {
 
-    String loginResults;
-    Context context;
-    String familyPersonData;
-    String familyEventData;
+    private String loginResults;
+    private Context context;
+    private String familyPersonData;
+    private String familyEventData;
     public AllPersonsResponse apr;
     public AllEventsResponse aer;
     public Activity mainActivity;
 
-    DataHolder dh;
+    private DataHolder dh;
 
     private JSONObject loginJO;
     @Override

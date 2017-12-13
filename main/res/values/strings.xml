@@ -20,4 +20,14 @@
     <string name="title_activity_person">Person Activity</string>
     <string name="logoutLine1">Logout</string>
     <string name="logoutLine2">RETURNS TO LOGIN SCREEN</string>
+    <string name="lifeStoryLine1">Life Story Lines</string>
+    <string name="lifeStoryLine2">SHOW LIFE STORY LINES</string>
+    <string name="familyTreeLine1">Family Tree Lines</string>
+    <string name="familyTreeLine2">SHOW TREE LINES</string>
+    <string name="spouseLine1">Spouse Lines</string>
+    <string name="spouseLine2">SHOW SPOUSE LINES</string>
+    <string name="mapTypeLine1">Map Type</string>
+    <string name="mapTypeLine2">BACKGROUND DISPLAY ON MAP</string>
+    <string name="resyncLine1">Re-sync Data</string>
+    <string name="resyncLine2">FROM FAMILYMAP SERVICE</string>
 </resources>
