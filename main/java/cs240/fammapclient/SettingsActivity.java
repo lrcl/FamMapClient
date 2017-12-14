@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
 import cs240.fammapclient.Models.DataHolder;
@@ -95,6 +97,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         resync1.setOnClickListener(this);
         resync2.setOnClickListener(this);
 
+        SwitchCompat switch1 = findViewById(R.id.toggleLifeStory);
+        SwitchCompat switch2 = findViewById(R.id.toggleFamilyTree);
+        SwitchCompat switch3 = findViewById(R.id.toggleSpouseLine);
 
 
     }

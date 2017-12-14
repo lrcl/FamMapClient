@@ -73,5 +73,25 @@
             android:text="@string/logoutLine2"
             />
     </GridLayout>
+    <android.support.v7.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleLifeStory"
+        android:layout_marginLeft="310dp"
+        />
+    <android.support.v7.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleFamilyTree"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="40dp"
+        />
+    <android.support.v7.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleSpouseLine"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="80dp"
+        />
 
 </FrameLayout>
