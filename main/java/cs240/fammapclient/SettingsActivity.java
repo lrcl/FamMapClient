@@ -51,17 +51,17 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.logout_line1:
-                DataHolder dh = DataHolder.getInstance();
-                dh.setOriginalEvent(null);
-                startMainActivityLogin();
-            case R.id.resyncLine1:
-                DataHolder dh2 = DataHolder.getInstance();
-                dh2.setOriginalEvent(null);
-                //start resyncTask
-                ResyncTask resyncTask = new ResyncTask(getApplicationContext());
-                resyncTask.execute();
+        if(v.getId() == R.id.logout_line1) {
+            DataHolder dh = DataHolder.getInstance();
+            dh.setOriginalEvent(null);
+            startMainActivityLogin();
+        }
+        else if(v.getId() == R.id.resyncLine1) {
+            DataHolder dh2 = DataHolder.getInstance();
+            dh2.setOriginalEvent(null);
+            //start resyncTask
+            ResyncTask resyncTask = new ResyncTask(getApplicationContext());
+            resyncTask.execute();
         }
     }
     public void startMainActivityLogin() {
