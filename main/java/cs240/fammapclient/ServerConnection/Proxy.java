@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import cs240.fammapclient.JsonHandling.FillRequest;
 import cs240.fammapclient.JsonHandling.RegisterRequest;
 import cs240.fammapclient.JsonHandling.RegisterResponse;
 import cs240.fammapclient.JsonHandling.Request;
@@ -59,6 +60,7 @@ public class Proxy {
             String lastName = registerInfo[5];
             String email = registerInfo[6];
             String gender = registerInfo[7];
+            setSessionInfo(host, port, userName, password);
             String registerUrl = PROTOCOL + host + ":" + port + "/user/register";
             URL url = new URL(registerUrl);
             String requestMethod = "GET";
@@ -113,12 +115,35 @@ public class Proxy {
         }
 
     }
+    public String fill(FillRequest fillRequest) {
+        try {
+            String username = fillRequest.getUsername();
+            String authToken = "";
+            String fillUrl = "http://10.0.2.2:8888/fill/" + username;
+            URL url = new URL(fillUrl);
+            String requestMethod = "POST";
+            HttpClient client = new HttpClient();
+            String response = client.sendRequest(fillRequest, requestMethod, url, authToken);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public String clear() {
+        try{
+            String authToken = "";
+            URL url = new URL("http://10.0.2.2:8888/clear");
+            String requestMethod = "POST";
+            HttpClient client = new HttpClient();
+            Request clearRequest = new Request();
+            String response = client.sendRequest(clearRequest, requestMethod, url, authToken);
+            return response;
 
-    //public Event[] getEventsByPersonID() {
-      //  try{
-        //    Gson gson = new Gson();
-
-        //}
-    //}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

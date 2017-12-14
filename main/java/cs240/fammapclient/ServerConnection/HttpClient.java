@@ -25,7 +25,6 @@ public class HttpClient{
             if(!authToken.equals("")) {
                 connection.addRequestProperty("Authorization",authToken);
             }
-           // connection.connect(); //don't necessarily need this line
             //include JSON in body of request
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             Gson gson = new Gson();
@@ -48,4 +47,5 @@ public class HttpClient{
             return null;
         }
     }
+
 }

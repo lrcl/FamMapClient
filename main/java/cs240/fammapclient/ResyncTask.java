@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 import cs240.fammapclient.JsonHandling.AllEventsResponse;
 import cs240.fammapclient.JsonHandling.AllPersonsResponse;
+import cs240.fammapclient.JsonHandling.FillRequest;
+import cs240.fammapclient.JsonHandling.Request;
 import cs240.fammapclient.Models.DataHolder;
 import cs240.fammapclient.ServerConnection.Proxy;
 
@@ -31,10 +33,28 @@ public class ResyncTask extends AsyncTask<String, String, String>{
         dh.setOriginalEvent(null);
         dh.setEventList(null);
         dh.setPersonList(null);
+
+
+        //clear and refill data in database
+        Proxy proxy = new Proxy();
+        //String clearResult = proxy.clear();
+        //JSONObject clearJO = null;
+        FillRequest fillRequest = new FillRequest(dh.getUser(), 4);
+        try{
+          //  clearJO = new JSONObject(clearResult);
+        //    String message = clearJO.getString("message");
+      //      if(message.equals("successfullyclearedthedatabase")) {
+                String message2 = proxy.fill(fillRequest);
+  //              System.out.println(message2);
+    //        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
         //create String[] with session info
         String[] sessionInfo = new String[] {dh.getHost(), dh.getPort(), dh.getUser(), dh.getPassword()};
-        //get Data from Server
-        Proxy proxy = new Proxy();
         loginResults = proxy.login(sessionInfo);
         if(loginResults.equals("null")) {
             return "";

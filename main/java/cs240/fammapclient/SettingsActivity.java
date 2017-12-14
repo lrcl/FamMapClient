@@ -54,7 +54,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         if(v.getId() == R.id.logout_line1) {
             DataHolder dh = DataHolder.getInstance();
             dh.setOriginalEvent(null);
-            startMainActivityLogin();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         else if(v.getId() == R.id.resyncLine1) {
             DataHolder dh2 = DataHolder.getInstance();
